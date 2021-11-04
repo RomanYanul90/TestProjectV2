@@ -32,9 +32,9 @@ export default function MainPage() {
           <Card />
         </div>
         <div className={cssStyles.buttonsContainer}>
-          <Button disabled={right} type="play" text="FIRST CARD" onClick={() => setLeft(true)} />
-          <Button disabled={left} type="play" text="SECOND CARD" onClick={() => setRight(true)} />
-          <Button type="play" text="Reshuffle the Cards" onClick={() => dispatch(fetchCards())} />
+          <Button disabled={right} type="play" text="First card" onClick={() => setLeft(true)} />
+          <Button disabled={left} type="play" text="Second card" onClick={() => setRight(true)} />
+          <Button disabled={!right && !left} type="play" text="Reshuffle the Cards" onClick={() => dispatch(fetchCards())} />
         </div>
       </div>
     );
@@ -72,7 +72,7 @@ export default function MainPage() {
   return (
     <div className={cssStyles.cardsContainer}>
       <div className={cssStyles.cardsContainer_withMessage}>
-        <h1>{message}</h1>
+        {message && <h1>{message}</h1>}
         <div className={cssStyles.cardsContainer}>
           {cards.map((card) => <Card key={card.code} isShown={isOpenCards} cardPicture={card.image} />)}
         </div>
