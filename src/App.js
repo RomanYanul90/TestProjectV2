@@ -8,6 +8,7 @@ function App() {
   const isAuthFromState = useSelector((state) => state.authentication.isAuth);
   // eslint-disable-next-line
   const isAuth = useSelector((state) => state.authentication.isAuth) || sessionStorage.getItem('isAuth');
+  const balance = useSelector((state) => state.balance.points);
   const routes = useRoutes(!!isAuth);
 
   console.log('isAuthFromState', isAuthFromState);
@@ -18,6 +19,7 @@ function App() {
   <div className="App">
     <Router>
       <Header isAuth={!!isAuth} />
+      {isAuth && <h1>{`Your points: ${balance}`}</h1>}
       <main className="main">{routes}</main>
     </Router>
   </div>
