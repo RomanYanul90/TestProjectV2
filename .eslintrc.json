@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "eslint-config-airbnb"
+  ],
+  "rules": {
+    /* Off */
+    "no-console": "off",
+    "import/prefer-default-export": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/no-danger": "off",
+    "react/jsx-props-no-spreading": "off",
+    /* Warn */
+    /* Error */
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ]
+  }
+}

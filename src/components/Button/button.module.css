@@ -1,0 +1,22 @@
+.button {
+    min-height: 50px;
+    min-width: 80px;
+    margin: 0;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button_login {
+    background-color: #ABCDAB;
+}
+
+.button_logout {
+    background-color: #8FBC8F;
+}
+
+.button_play {
+    background-color: #90EE90;
+}
