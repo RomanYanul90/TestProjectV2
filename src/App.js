@@ -15,14 +15,12 @@ function App() {
   console.log('isAuth', !!isAuth);
   return (
   // eslint-disable-next-line
+  <div className="App">
     <Router>
       <Header isAuth={!!isAuth} />
       <main className="main">{routes}</main>
     </Router>
-  // <div className="App">
-  //     <Header/>
-  //     <LoginPage />
-  // </div>
+  </div>
   );
 }
 
