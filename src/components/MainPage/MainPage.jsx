@@ -13,6 +13,10 @@ export default function MainPage() {
   const [isOpenCards, setOpenCards] = useState(false);
   const [left, setLeft] = useState(false);
   const [right, setRight] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const vonMessage = 'YOU WON!!!';
+  const loseMessage = 'YOU LOSE ;(';
 
   if (isLoading) {
     return (
@@ -23,13 +27,13 @@ export default function MainPage() {
   if (!cards.length) {
     return (
       <div>
-        <div>
+        <div className={cssStyles.cardsContainer}>
           <Card />
           <Card />
         </div>
         <div className={cssStyles.buttonsContainer}>
-          <Button disabled={right} type="play" text="LEFT CARD" onClick={() => setLeft(true)} />
-          <Button disabled={left} type="play" text="RIGHT CARD" onClick={() => setRight(true)} />
+          <Button disabled={right} type="play" text="FIRST CARD" onClick={() => setLeft(true)} />
+          <Button disabled={left} type="play" text="SECOND CARD" onClick={() => setRight(true)} />
           <Button type="play" text="Reshuffle the Cards" onClick={() => dispatch(fetchCards())} />
         </div>
       </div>
@@ -42,12 +46,16 @@ export default function MainPage() {
   const playButtonHandler = (bid) => {
     if (left && leftCardValue > rightCardValue) {
       dispatch({ type: 'ADD_POINTS', payload: bid });
+      setMessage(vonMessage);
     } else if (left && leftCardValue < rightCardValue) {
+      setMessage(loseMessage);
       dispatch({ type: 'TAKE_POINTS', payload: bid });
     } else if (right && rightCardValue > leftCardValue) {
       dispatch({ type: 'ADD_POINTS', payload: bid });
+      setMessage(vonMessage);
     } else if (right && rightCardValue < leftCardValue) {
       dispatch({ type: 'TAKE_POINTS', payload: bid });
+      setMessage(loseMessage);
     }
 
     setOpenCards(true);
@@ -58,28 +66,35 @@ export default function MainPage() {
     setLeft(false);
     setRight(false);
     setOpenCards(false);
+    setMessage('');
   };
 
   return (
-    <div className={cssStyles.buttonsContainer}>
-      {cards.map((card) => <Card key={card.code} isShown={isOpenCards} cardPicture={card.image} />)}
-      {/* eslint-disable-next-line react/button-has-type */}
-      {isOpenCards ? (
-        <Button
-          type="play"
-          text="New Game"
-          /* eslint-disable-next-line no-undef */
-          onClick={() => renewGameHandler()}
-        />
-      ) : (
-        <Button
-          disabled={isOpenCards}
-          type="play"
-          text="Make a BID"
-          /* eslint-disable-next-line no-undef */
-          onClick={() => playButtonHandler(Number(prompt()))}
-        />
-      )}
+    <div className={cssStyles.cardsContainer}>
+      <div className={cssStyles.cardsContainer_withMessage}>
+        <h1>{message}</h1>
+        <div className={cssStyles.cardsContainer}>
+          {cards.map((card) => <Card key={card.code} isShown={isOpenCards} cardPicture={card.image} />)}
+        </div>
+        {/* eslint-disable-next-line react/button-has-type */}
+        {isOpenCards ? (
+          <Button
+            type="play"
+            text="New Game"
+            /* eslint-disable-next-line no-undef */
+            onClick={() => renewGameHandler()}
+          />
+        ) : (
+          <Button
+            disabled={isOpenCards}
+            type="play"
+            text="Make a BID"
+            /* eslint-disable-next-line no-undef */
+            onClick={() => playButtonHandler(Number(prompt()))}
+          />
+        )}
+      </div>
+
     </div>
   );
 }
