@@ -8,13 +8,8 @@ export default function Header({ isAuth }) {
   const history = useHistory();
 
   const logOutHandler = () => {
-    console.log('logOutHandler clicked');
     dispatch({ type: 'LOG_OUT' });
     history.push('/login');
-    // eslint-disable-next-line no-undef
-    sessionStorage.removeItem('isAuth');
-    // eslint-disable-next-line no-undef
-    window.location.reload();
   };
 
   return (

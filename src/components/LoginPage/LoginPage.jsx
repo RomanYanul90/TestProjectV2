@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Button from '../Button/Button';
 
+import cssStyles from './LoginPage.module.css';
+
 export default function LoginPage() {
   const [error, setError] = useState(null);
   const [form, setForm] = useState({
@@ -27,8 +29,6 @@ export default function LoginPage() {
     };
 
     if (JSON.stringify(validUserData) === JSON.stringify(form)) {
-      // eslint-disable-next-line no-undef
-      sessionStorage.setItem('isAuth', 'true');
       dispatch({ type: 'LOG_IN' });
       history.push('/');
     } else {
@@ -37,16 +37,13 @@ export default function LoginPage() {
   };
 
   return (
-    <section>
+    <section className={cssStyles.loginSection}>
       <h2>Sign in to your account</h2>
       <form>
-        <div>
-          <div>
-            <input id="email" type="text" name="username" onChange={changeHandler} />
-            <input id="password" type="password" name="password" onChange={changeHandler} />
-          </div>
+        <div className={cssStyles.inputsContainer}>
+          <input id="email" type="text" name="username" onChange={changeHandler} />
+          <input id="password" type="password" name="password" onChange={changeHandler} />
         </div>
-
         {/* <button onClick={loginHandler}>Log in</button> */}
         <Button text="Log in" type="login" onClick={loginHandler} />
         {error && <h2 style={{ color: 'red' }}>{error}</h2>}
