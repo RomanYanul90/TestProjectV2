@@ -25,7 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --quiet .",
-    "format": "eslint --fix .",
+    "format": "eslint --fix ."
   },
   "eslintConfig": {
     "extends": [

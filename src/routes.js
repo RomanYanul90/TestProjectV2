@@ -6,6 +6,7 @@ import LoginPage from './components/LoginPage/LoginPage';
 export const useRoutes = (isAuth) => {
   if (isAuth) {
     return (
+    // eslint-disable-next-line
       <Switch>
         <Route path="/" exact>
           <MainPage />

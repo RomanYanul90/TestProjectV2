@@ -11,8 +11,10 @@ import App from './App';
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
+  // eslint-disable-next-line
   <Provider store={store}>
     <App />
   </Provider>,
+  // eslint-disable-next-line
   document.getElementById('root'),
 );
