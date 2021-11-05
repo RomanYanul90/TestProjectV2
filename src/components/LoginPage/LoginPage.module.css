@@ -10,4 +10,6 @@
 .inputsContainer input{
     height: 40px;
     width: 300px;
+    padding: 10px;
+    font-size: 18px;
 }
