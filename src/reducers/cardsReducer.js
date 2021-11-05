@@ -1,10 +1,3 @@
-// const initialState = {
-//   cards: [
-//     { code: '00', image: 'https://static7.depositphotos.com/1257959/746/v/600/depositphotos_7461846-stock-illustration-playing-card-back-side-60x90.jpg' },
-//     { code: '00', image: 'https://static7.depositphotos.com/1257959/746/v/600/depositphotos_7461846-stock-illustration-playing-card-back-side-60x90.jpg' },
-//   ],
-// };
-
 const initialState = {
   cards: [],
 };

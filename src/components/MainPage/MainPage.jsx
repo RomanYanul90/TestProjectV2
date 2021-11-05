@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchCards } from '../../actions/fetchCards';
 import { Card } from '../Card/Card';
 import Button from '../Button/Button';
@@ -14,34 +14,25 @@ export default function MainPage() {
   const [left, setLeft] = useState(false);
   const [right, setRight] = useState(false);
   const [message, setMessage] = useState('');
+  const [loadNewCards, setLoadNewCards] = useState(false);
 
   const vonMessage = 'YOU WON!!!';
   const loseMessage = 'YOU LOSE ;(';
 
-  if (isLoading) {
-    return (
-      <h1>LOADING...</h1>
-    );
-  }
+  let leftCardValue;
+  let rightCardValue;
 
-  if (!cards.length) {
-    return (
-      <div>
-        <div className={cssStyles.cardsContainer}>
-          <Card />
-          <Card />
-        </div>
-        <div className={cssStyles.buttonsContainer}>
-          <Button disabled={right} type="play" text="First card" onClick={() => setLeft(true)} />
-          <Button disabled={left} type="play" text="Second card" onClick={() => setRight(true)} />
-          <Button disabled={!right && !left} type="play" text="Reshuffle the Cards" onClick={() => dispatch(fetchCards())} />
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    dispatch(fetchCards());
+    setLoadNewCards(false);
+  }, [loadNewCards]);
 
-  const leftCardValue = cards[0].code.split('')[0];
-  const rightCardValue = cards[1].code.split('')[0];
+  if (cards.length > 0) {
+    // eslint-disable-next-line prefer-destructuring
+    leftCardValue = cards[0].code.split('')[0];
+    // eslint-disable-next-line prefer-destructuring
+    rightCardValue = cards[1].code.split('')[0];
+  }
 
   const playButtonHandler = (bid) => {
     if (left && leftCardValue > rightCardValue) {
@@ -67,7 +58,14 @@ export default function MainPage() {
     setRight(false);
     setOpenCards(false);
     setMessage('');
+    setLoadNewCards(true);
   };
+
+  if (isLoading) {
+    return (
+      <h1>LOADING...</h1>
+    );
+  }
 
   return (
     <div className={cssStyles.cardsContainer}>
@@ -76,25 +74,24 @@ export default function MainPage() {
         <div className={cssStyles.cardsContainer}>
           {cards.map((card) => <Card key={card.code} isShown={isOpenCards} cardPicture={card.image} />)}
         </div>
-        {/* eslint-disable-next-line react/button-has-type */}
-        {isOpenCards ? (
-          <Button
-            type="play"
-            text="New Game"
-            /* eslint-disable-next-line no-undef */
-            onClick={() => renewGameHandler()}
-          />
-        ) : (
-          <Button
-            disabled={isOpenCards}
-            type="play"
-            text="Make a BID"
-            /* eslint-disable-next-line no-undef */
-            onClick={() => playButtonHandler(Number(prompt()))}
-          />
-        )}
+        <div>
+          {isOpenCards ? (
+            <Button
+              type="play"
+              text="New Game"
+              /* eslint-disable-next-line no-undef */
+              onClick={() => renewGameHandler()}
+            />
+          ) : (
+            <div className={cssStyles.buttonsContainer}>
+              <Button disabled={right} type="play" text="First card" onClick={() => setLeft(true)} />
+              <Button disabled={left} type="play" text="Second card" onClick={() => setRight(true)} />
+              {/* eslint-disable-next-line no-undef */}
+              <Button disabled={!right && !left} type="play" text="Make a BID" onClick={() => playButtonHandler(Number(prompt()))} />
+            </div>
+          )}
+        </div>
       </div>
-
     </div>
   );
 }
