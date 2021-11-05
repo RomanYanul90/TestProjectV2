@@ -1,10 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { fetchCards } from '../../actions/fetchCards';
+// import { fetchCards } from '../../actions/fetchCards';
 import { Card } from '../Card/Card';
 import Button from '../Button/Button';
 
 import cssStyles from './MainPage.module.css';
+import { FETCH_CARDS_WITH_SAGA } from '../../reducers/cardsReducer';
+// import { fetchCardsWithSaga } from '../../reducers/cardsReducer';
 
 export default function MainPage() {
   const dispatch = useDispatch();
@@ -19,7 +21,8 @@ export default function MainPage() {
   let rightCardValue;
 
   useEffect(() => {
-    dispatch(fetchCards());
+    // dispatch(fetchCards());
+    dispatch({ type: FETCH_CARDS_WITH_SAGA });
     setLoadNewCards(false);
   }, [loadNewCards]);
 
@@ -74,7 +77,6 @@ export default function MainPage() {
             <Button
               type="play"
               text="New Game"
-              /* eslint-disable-next-line no-undef */
               onClick={() => renewGameHandler()}
             />
           ) : (

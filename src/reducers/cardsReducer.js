@@ -3,6 +3,7 @@ const initialState = {
 };
 
 const FETCH_CARDS = 'FETCH_CARDS';
+export const FETCH_CARDS_WITH_SAGA = 'FETCH_CARDS_WITH_SAGA';
 
 export const cardsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -14,3 +15,7 @@ export const cardsReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export const fetchCardsWithSaga = () => ({
+  action: FETCH_CARDS_WITH_SAGA,
+});
