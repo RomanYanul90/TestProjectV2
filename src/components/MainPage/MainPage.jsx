@@ -7,17 +7,15 @@ import Button from '../Button/Button';
 import cssStyles from './MainPage.module.css';
 
 export default function MainPage() {
+  console.log('render');
   const dispatch = useDispatch();
   const cards = useSelector((state) => state.cards.cards);
   const isLoading = useSelector((state) => state.loading.isLoading);
+  const message = useSelector((state) => state.message.info);
   const [isOpenCards, setOpenCards] = useState(false);
   const [left, setLeft] = useState(false);
   const [right, setRight] = useState(false);
-  const [message, setMessage] = useState('');
   const [loadNewCards, setLoadNewCards] = useState(false);
-
-  const vonMessage = 'YOU WON!!!';
-  const loseMessage = 'YOU LOSE ;(';
 
   let leftCardValue;
   let rightCardValue;
@@ -37,16 +35,16 @@ export default function MainPage() {
   const playButtonHandler = (bid) => {
     if (left && leftCardValue > rightCardValue) {
       dispatch({ type: 'ADD_POINTS', payload: bid });
-      setMessage(vonMessage);
+      dispatch({ type: 'SET_WON_MESSAGE' });
     } else if (left && leftCardValue < rightCardValue) {
-      setMessage(loseMessage);
       dispatch({ type: 'TAKE_POINTS', payload: bid });
+      dispatch({ type: 'SET_LOSE_MESSAGE' });
     } else if (right && rightCardValue > leftCardValue) {
       dispatch({ type: 'ADD_POINTS', payload: bid });
-      setMessage(vonMessage);
+      dispatch({ type: 'SET_WON_MESSAGE' });
     } else if (right && rightCardValue < leftCardValue) {
       dispatch({ type: 'TAKE_POINTS', payload: bid });
-      setMessage(loseMessage);
+      dispatch({ type: 'SET_LOSE_MESSAGE' });
     }
 
     setOpenCards(true);
@@ -57,7 +55,7 @@ export default function MainPage() {
     setLeft(false);
     setRight(false);
     setOpenCards(false);
-    setMessage('');
+    dispatch({ type: 'CLEAR_MESSAGE' });
     setLoadNewCards(true);
   };
 
