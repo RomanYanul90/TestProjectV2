@@ -10,14 +10,10 @@ export default function MainPage() {
   const dispatch = useDispatch();
   const cards = useSelector((state) => state.cards.cards);
   const isLoading = useSelector((state) => state.loading.isLoading);
+  const message = useSelector((state) => state.message.info);
   const [isOpenCards, setOpenCards] = useState(false);
-  const [left, setLeft] = useState(false);
-  const [right, setRight] = useState(false);
-  const [message, setMessage] = useState('');
+  const [clickedButton, setClickedButton] = useState('');
   const [loadNewCards, setLoadNewCards] = useState(false);
-
-  const vonMessage = 'YOU WON!!!';
-  const loseMessage = 'YOU LOSE ;(';
 
   let leftCardValue;
   let rightCardValue;
@@ -35,18 +31,18 @@ export default function MainPage() {
   }
 
   const playButtonHandler = (bid) => {
-    if (left && leftCardValue > rightCardValue) {
+    if (clickedButton === 'left' && leftCardValue > rightCardValue) {
       dispatch({ type: 'ADD_POINTS', payload: bid });
-      setMessage(vonMessage);
-    } else if (left && leftCardValue < rightCardValue) {
-      setMessage(loseMessage);
+      dispatch({ type: 'SET_WON_MESSAGE' });
+    } else if (clickedButton === 'left' && leftCardValue < rightCardValue) {
       dispatch({ type: 'TAKE_POINTS', payload: bid });
-    } else if (right && rightCardValue > leftCardValue) {
+      dispatch({ type: 'SET_LOSE_MESSAGE' });
+    } else if (clickedButton === 'right' && rightCardValue > leftCardValue) {
       dispatch({ type: 'ADD_POINTS', payload: bid });
-      setMessage(vonMessage);
-    } else if (right && rightCardValue < leftCardValue) {
+      dispatch({ type: 'SET_WON_MESSAGE' });
+    } else if (clickedButton === 'right' && rightCardValue < leftCardValue) {
       dispatch({ type: 'TAKE_POINTS', payload: bid });
-      setMessage(loseMessage);
+      dispatch({ type: 'SET_LOSE_MESSAGE' });
     }
 
     setOpenCards(true);
@@ -54,10 +50,9 @@ export default function MainPage() {
 
   const renewGameHandler = () => {
     dispatch({ type: 'CLEAR_CARDS_SET' });
-    setLeft(false);
-    setRight(false);
+    setClickedButton('');
     setOpenCards(false);
-    setMessage('');
+    dispatch({ type: 'CLEAR_MESSAGE' });
     setLoadNewCards(true);
   };
 
@@ -84,10 +79,10 @@ export default function MainPage() {
             />
           ) : (
             <div className={cssStyles.buttonsContainer}>
-              <Button disabled={right} type="play" text="First card" onClick={() => setLeft(true)} />
-              <Button disabled={left} type="play" text="Second card" onClick={() => setRight(true)} />
+              <Button disabled={clickedButton === 'right'} type="play" text="First card" onClick={() => setClickedButton('left')} />
+              <Button disabled={clickedButton === 'left'} type="play" text="Second card" onClick={() => setClickedButton('right')} />
               {/* eslint-disable-next-line no-undef */}
-              <Button disabled={!right && !left} type="play" text="Make a BID" onClick={() => playButtonHandler(Number(prompt()))} />
+              <Button disabled={!clickedButton} type="play" text="Make a BID" onClick={() => playButtonHandler(Number(prompt()))} />
             </div>
           )}
         </div>
