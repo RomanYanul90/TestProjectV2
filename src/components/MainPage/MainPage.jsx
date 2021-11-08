@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-// import { fetchCards } from '../../actions/fetchCards';
 import { Card } from '../Card/Card';
 import Button from '../Button/Button';
 
 import cssStyles from './MainPage.module.css';
-import { FETCH_CARDS_WITH_SAGA } from '../../reducers/cardsReducer';
-// import { fetchCardsWithSaga } from '../../reducers/cardsReducer';
+import {
+  ADD_POINTS, CLEAR_CARDS_SET, CLEAR_MESSAGE,
+  FETCH_CARDS_WITH_SAGA,
+  SET_LOSE_MESSAGE,
+  SET_WON_MESSAGE,
+  TAKE_POINTS,
+} from '../../actions/actionTypes';
+import { errorMessage } from '../../reducers/messageReducer';
 
 export default function MainPage() {
   const dispatch = useDispatch();
@@ -16,6 +21,9 @@ export default function MainPage() {
   const [isOpenCards, setOpenCards] = useState(false);
   const [clickedButton, setClickedButton] = useState('');
   const [loadNewCards, setLoadNewCards] = useState(false);
+
+  const right = 'right';
+  const left = 'left';
 
   let leftCardValue;
   let rightCardValue;
@@ -34,28 +42,28 @@ export default function MainPage() {
   }
 
   const playButtonHandler = (bid) => {
-    if (clickedButton === 'left' && leftCardValue > rightCardValue) {
-      dispatch({ type: 'ADD_POINTS', payload: bid });
-      dispatch({ type: 'SET_WON_MESSAGE' });
-    } else if (clickedButton === 'left' && leftCardValue < rightCardValue) {
-      dispatch({ type: 'TAKE_POINTS', payload: bid });
-      dispatch({ type: 'SET_LOSE_MESSAGE' });
-    } else if (clickedButton === 'right' && rightCardValue > leftCardValue) {
-      dispatch({ type: 'ADD_POINTS', payload: bid });
-      dispatch({ type: 'SET_WON_MESSAGE' });
-    } else if (clickedButton === 'right' && rightCardValue < leftCardValue) {
-      dispatch({ type: 'TAKE_POINTS', payload: bid });
-      dispatch({ type: 'SET_LOSE_MESSAGE' });
+    if (clickedButton === left && leftCardValue > rightCardValue) {
+      dispatch({ type: ADD_POINTS, payload: bid });
+      dispatch({ type: SET_WON_MESSAGE });
+    } else if (clickedButton === left && leftCardValue < rightCardValue) {
+      dispatch({ type: TAKE_POINTS, payload: bid });
+      dispatch({ type: SET_LOSE_MESSAGE });
+    } else if (clickedButton === right && rightCardValue > leftCardValue) {
+      dispatch({ type: ADD_POINTS, payload: bid });
+      dispatch({ type: SET_WON_MESSAGE });
+    } else if (clickedButton === right && rightCardValue < leftCardValue) {
+      dispatch({ type: TAKE_POINTS, payload: bid });
+      dispatch({ type: SET_LOSE_MESSAGE });
     }
 
     setOpenCards(true);
   };
 
   const renewGameHandler = () => {
-    dispatch({ type: 'CLEAR_CARDS_SET' });
+    dispatch({ type: CLEAR_CARDS_SET });
     setClickedButton('');
     setOpenCards(false);
-    dispatch({ type: 'CLEAR_MESSAGE' });
+    dispatch({ type: CLEAR_MESSAGE });
     setLoadNewCards(true);
   };
 
@@ -72,22 +80,24 @@ export default function MainPage() {
         <div className={cssStyles.cardsContainer}>
           {cards.map((card) => <Card key={card.code} isShown={isOpenCards} cardPicture={card.image} />)}
         </div>
-        <div>
-          {isOpenCards ? (
-            <Button
-              type="play"
-              text="New Game"
-              onClick={() => renewGameHandler()}
-            />
-          ) : (
-            <div className={cssStyles.buttonsContainer}>
-              <Button disabled={clickedButton === 'right'} type="play" text="First card" onClick={() => setClickedButton('left')} />
-              <Button disabled={clickedButton === 'left'} type="play" text="Second card" onClick={() => setClickedButton('right')} />
-              {/* eslint-disable-next-line no-undef */}
-              <Button disabled={!clickedButton} type="play" text="Make a BID" onClick={() => playButtonHandler(Number(prompt()))} />
-            </div>
-          )}
-        </div>
+        {message !== errorMessage && (
+          <div>
+            {isOpenCards ? (
+              <Button
+                type="play"
+                text="New Game"
+                onClick={() => renewGameHandler()}
+              />
+            ) : (
+              <div className={cssStyles.buttonsContainer}>
+                <Button disabled={clickedButton === right} type="play" text="First card" onClick={() => setClickedButton(left)} />
+                <Button disabled={clickedButton === left} type="play" text="Second card" onClick={() => setClickedButton(right)} />
+                {/* eslint-disable-next-line no-undef */}
+                <Button disabled={!clickedButton} type="play" text="Make a BID" onClick={() => playButtonHandler(Number(prompt()))} />
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
