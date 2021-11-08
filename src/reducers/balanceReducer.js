@@ -1,9 +1,8 @@
+import { ADD_POINTS, TAKE_POINTS } from '../actions/actionTypes';
+
 const initialState = {
   points: 100,
 };
-
-const ADD_POINTS = 'ADD_POINTS';
-const TAKE_POINTS = 'TAKE_POINTS';
 
 export const balanceReducer = (state = initialState, action) => {
   switch (action.type) {

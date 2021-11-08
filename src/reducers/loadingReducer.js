@@ -1,5 +1,4 @@
-const SHOW_LOADER = 'SHOW_LOADER';
-const HIDE_LOADER = 'HIDE_LOADER';
+import { HIDE_LOADER, SHOW_LOADER } from '../actions/actionTypes';
 
 const initialState = {
   isLoading: false,

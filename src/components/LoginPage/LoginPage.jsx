@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import Button from '../Button/Button';
 
 import cssStyles from './LoginPage.module.css';
+import { LOG_IN } from '../../actions/actionTypes';
 
 export default function LoginPage() {
   const [error, setError] = useState(null);
@@ -29,7 +30,7 @@ export default function LoginPage() {
     };
 
     if (JSON.stringify(validUserData) === JSON.stringify(form)) {
-      dispatch({ type: 'LOG_IN' });
+      dispatch({ type: LOG_IN });
       history.push('/');
     } else {
       setError('Invalid user data');

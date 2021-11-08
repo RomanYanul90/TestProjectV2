@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Button from '../Button/Button';
+import { LOG_OUT } from '../../actions/actionTypes';
 
 // eslint-disable-next-line react/prop-types
 export default function Header({ isAuth }) {
@@ -8,7 +9,7 @@ export default function Header({ isAuth }) {
   const history = useHistory();
 
   const logOutHandler = () => {
-    dispatch({ type: 'LOG_OUT' });
+    dispatch({ type: LOG_OUT });
     history.push('/login');
   };
 
