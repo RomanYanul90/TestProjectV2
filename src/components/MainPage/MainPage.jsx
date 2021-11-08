@@ -12,6 +12,7 @@ import {
   TAKE_POINTS,
 } from '../../actions/actionTypes';
 import { errorMessage } from '../../reducers/messageReducer';
+// import { fetchCards } from '../../actions/fetchCards';
 
 export default function MainPage() {
   const dispatch = useDispatch();
